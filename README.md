@@ -9,7 +9,8 @@ C#, Linq, SQL Project that can manage and operate a bank system
 
 ## Simple Youtube Video of How To Use
 
-[Click_To_watch](https://youtu.be/45FeIjS8fB8)
+[Click_To_watch :](https://youtu.be/45FeIjS8fB8)
+<p> <i>https://youtu.be/45FeIjS8fB8</i> </p>
 
 <p>
 	<img src="https://github.com/Asalek/Bank_Management/blob/main/ezgif.com-gif-maker.gif" alt="Julia_Set" width=70% height=auto>
