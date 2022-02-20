@@ -1,0 +1,149 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="BANKModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Login1">
+    <Key>
+      <PropertyRef Name="UserName" />
+    </Key>
+    <Property Name="UserName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Password1" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityContainer Name="BANKEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Login1" EntityType="Self.Login1" />
+    <EntitySet Name="Transiction_history" EntityType="BANKModel.Transiction_history" />
+    <EntitySet Name="sysdiagrams" EntityType="BANKModel.sysdiagram" />
+    <FunctionImport Name="sp_alterdiagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="version" Mode="In" Type="Int32" />
+      <Parameter Name="definition" Mode="In" Type="Binary" />
+    </FunctionImport>
+    <FunctionImport Name="sp_creatediagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="version" Mode="In" Type="Int32" />
+      <Parameter Name="definition" Mode="In" Type="Binary" />
+    </FunctionImport>
+    <FunctionImport Name="sp_dropdiagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(BANKModel.sp_helpdiagramdefinition_Result)">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(BANKModel.sp_helpdiagrams_Result)">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_renamediagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="new_diagramname" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_upgraddiagrams" />
+    <EntitySet Name="client_info" EntityType="BANKModel.client_info" />
+    <AssociationSet Name="FK__Transicti__recei__5629CD9C" Association="BANKModel.FK__Transicti__recei__5629CD9C">
+      <End Role="client_info" EntitySet="client_info" />
+      <End Role="Transiction_history" EntitySet="Transiction_history" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Transicti__sende__5535A963" Association="BANKModel.FK__Transicti__sende__5535A963">
+      <End Role="client_info" EntitySet="client_info" />
+      <End Role="Transiction_history" EntitySet="Transiction_history" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Transiction_history_client_info" Association="BANKModel.FK_Transiction_history_client_info">
+      <End Role="client_info" EntitySet="client_info" />
+      <End Role="Transiction_history" EntitySet="Transiction_history" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Transiction_history">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="amount" Type="Double" />
+    <Property Name="sender" Type="Int32" />
+    <Property Name="receiver" Type="Int32" />
+    <Property Name="drawer" Type="Int32" />
+    <Property Name="withdraw_Time" Type="DateTime" Precision="3" />
+    <Property Name="transfer_Time" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="client_info" Relationship="BANKModel.FK__Transicti__recei__5629CD9C" FromRole="Transiction_history" ToRole="client_info" />
+    <NavigationProperty Name="client_info1" Relationship="BANKModel.FK__Transicti__sende__5535A963" FromRole="Transiction_history" ToRole="client_info" />
+    <NavigationProperty Name="client_info2" Relationship="BANKModel.FK_Transiction_history_client_info" FromRole="Transiction_history" ToRole="client_info" />
+  </EntityType>
+  <EntityType Name="sysdiagram">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" Type="String" />
+    <Property Name="principal_id" Nullable="false" Type="Int32" />
+    <Property Name="diagram_id" Nullable="false" annotation:StoreGeneratedPattern="Identity" Type="Int32" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" MaxLength="Max" FixedLength="false" Type="Binary" />
+  </EntityType>
+  <ComplexType Name="sp_helpdiagramdefinition_Result">
+    <Property Type="Int32" Name="version" Nullable="true" />
+    <Property Type="Binary" Name="definition" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="sp_helpdiagrams_Result">
+    <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
+    <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
+    <Property Type="Int32" Name="ID" Nullable="false" />
+    <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
+    <Property Type="Int32" Name="OwnerID" Nullable="false" />
+  </ComplexType>
+  <EntityType Name="client_info">
+    <Key>
+      <PropertyRef Name="account_Num" />
+    </Key>
+    <Property Name="account_Num" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="fullName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="phone" Type="Decimal" Precision="13" Scale="0" />
+    <Property Name="countryNegative" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="card_type" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="gender" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="Nationality" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="dateOfBirth" Type="DateTime" Precision="3" />
+    <Property Name="Balance" Type="Double" />
+    <Property Name="picture" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <NavigationProperty Name="Transiction_history" Relationship="BANKModel.FK__Transicti__recei__5629CD9C" FromRole="client_info" ToRole="Transiction_history" />
+    <NavigationProperty Name="Transiction_history1" Relationship="BANKModel.FK__Transicti__sende__5535A963" FromRole="client_info" ToRole="Transiction_history" />
+    <NavigationProperty Name="Transiction_history2" Relationship="BANKModel.FK_Transiction_history_client_info" FromRole="client_info" ToRole="Transiction_history" />
+  </EntityType>
+  <Association Name="FK__Transicti__recei__5629CD9C">
+    <End Type="BANKModel.client_info" Role="client_info" Multiplicity="0..1" />
+    <End Type="BANKModel.Transiction_history" Role="Transiction_history" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="client_info">
+        <PropertyRef Name="account_Num" />
+      </Principal>
+      <Dependent Role="Transiction_history">
+        <PropertyRef Name="receiver" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Transicti__sende__5535A963">
+    <End Type="BANKModel.client_info" Role="client_info" Multiplicity="0..1" />
+    <End Type="BANKModel.Transiction_history" Role="Transiction_history" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="client_info">
+        <PropertyRef Name="account_Num" />
+      </Principal>
+      <Dependent Role="Transiction_history">
+        <PropertyRef Name="sender" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Transiction_history_client_info">
+    <End Type="BANKModel.client_info" Role="client_info" Multiplicity="0..1" />
+    <End Type="BANKModel.Transiction_history" Role="Transiction_history" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="client_info">
+        <PropertyRef Name="account_Num" />
+      </Principal>
+      <Dependent Role="Transiction_history">
+        <PropertyRef Name="drawer" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

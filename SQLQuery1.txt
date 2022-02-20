@@ -1,0 +1,9 @@
+select * from Transiction_history
+
+select * from client_info
+
+update client_info
+set sold = 0 where fullName = 'Sara'
+
+truncate table transiction_history
+insert into Transiction_history(withdraw_amount,sender,receiver,transfer_Time) values (11,9000116,9000116,11/11/2011)
